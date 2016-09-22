@@ -8,7 +8,7 @@ from .utils import get_related_objects
 
 DELETE_RELATED_OBJECTS = getattr(settings, 'LOGICALDELETE_DELETE_RELATED_OBJECTS', True)
 
-class LogicalDeleteMixin(object):
+class LogicalDeleteMixin(models.Model):
     def active(self):
         return self.date_removed is None
     active.boolean = True
@@ -24,6 +24,9 @@ class LogicalDeleteMixin(object):
         # Soft delete the object
         self.date_removed = timezone.now()
         self.save()
+
+    class Meta:
+        abstract = True
 
 
 class LogicalDeleteModel(LogicalDeleteMixin, models.Model):
