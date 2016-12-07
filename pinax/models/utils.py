@@ -20,4 +20,3 @@ def get_related_objects(obj, using=DEFAULT_DB_ALIAS):
         return ()
 
     return flatten(collector.nested())
-
