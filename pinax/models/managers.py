@@ -17,6 +17,8 @@ class LogicalDeletedManager(models.Manager):
 
     def all_with_deleted(self):
         if self.model:
+            if hasattr(self, 'core_filters'):
+                return super(LogicalDeletedManager, self).get_queryset().filter(**self.core_filters)
             return super(LogicalDeletedManager, self).get_queryset()
 
     def only_deleted(self):
