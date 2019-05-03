@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, router
 from django.utils import timezone
 from django.conf import settings
 
@@ -16,7 +16,8 @@ class LogicalDeleteMixin(models.Model):
     def delete(self):
         # Fetch related models
         if DELETE_RELATED_OBJECTS:
-            to_delete = get_related_objects(self)
+            using = router.db_for_write(self.__class__, instance=self)
+            to_delete = get_related_objects(self, using)
 
             for obj in to_delete:
                 obj.delete()
